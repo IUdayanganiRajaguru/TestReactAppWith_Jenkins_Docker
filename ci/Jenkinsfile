@@ -21,6 +21,6 @@
                 docker push 496572606827.dkr.ecr.us-east-1.amazonaws.com/my-react-app:v1
             '''
         }
-
+    }
 
 
