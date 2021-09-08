@@ -2,15 +2,18 @@ def TRUNK = 'develop'
 def REPO = 'IUdayanganiRajaguru/TestReactAppWith_Jenkins_Docker'
 def CREDENTIAL = 'IUR-github-cred'
 
-    node {  if (env.CHANGE_ID != null || env.BRANCH_NAME == "$TRUNK") {
+    node(POD_LABEL) {  if (env.CHANGE_ID != null || env.BRANCH_NAME == "$TRUNK") {
 
         // Checking out
         stage("Checkout") {
-            if (env.BRANCH_NAME == "$TRUNK") {
-                git branch: "$BRANCH_NAME", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
-            } else {
-                git branch: "$CHANGE_BRANCH", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
-            }
+//             if (env.BRANCH_NAME == "$TRUNK") {
+//                 git branch: "$BRANCH_NAME", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
+//             } else {
+//                 git branch: "$CHANGE_BRANCH", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
+//             }
+                sh '''
+                    git checkout "$TRUNK"
+                '''
         }
 
         // Merge with target branch in case if this is a PR
