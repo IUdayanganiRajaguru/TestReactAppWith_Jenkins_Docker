@@ -16,7 +16,7 @@ def CREDENTIAL = 'IUR-github-cred'
                 '''
         }
 
-        // Merge with target branch in case if this is a PR
+
 //         stage('Merge target OR Parse commit message') {
 //             if (env.CHANGE_ID != null) {
 //                 container('git') {
