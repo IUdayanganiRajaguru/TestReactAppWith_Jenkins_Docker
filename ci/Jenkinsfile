@@ -1,11 +1,9 @@
-def TRUNK = 'develop'
-
     node {
 
         // Checking out
         stage("Checkout") {
                sh '''
-                    git checkout "$TRUNK"
+                    git checkout develop
                '''
         }
 
