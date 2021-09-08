@@ -14,24 +14,8 @@ spec:
     spec:
       containers:
         - name: my-react-app
-          image: localhost:5000/my-react-app
+          image: 496572606827.dkr.ecr.us-east-1.amazonaws.com/wel-my-account-ui:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
       restartPolicy: Always
-
----
-
-kind: Service
-apiVersion: v1
-metadata:
-  name: my-react-app
-spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 80
-      protocol: TCP
-      nodePort: 31000
-  selector:
-    app: my-react-app

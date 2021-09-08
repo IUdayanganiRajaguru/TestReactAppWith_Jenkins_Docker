@@ -1,0 +1,38 @@
+def TRUNK = 'develop'
+def REPO = 'IUdayanganiRajaguru/TestReactAppWith_Jenkins_Docker'
+def CREDENTIAL = 'IUR-github-cred'
+
+    node {  if (env.CHANGE_ID != null || env.BRANCH_NAME == "$TRUNK") {
+
+        // Checking out
+        stage("Checkout") {
+            if (env.BRANCH_NAME == "$TRUNK") {
+                git branch: "$BRANCH_NAME", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
+            } else {
+                git branch: "$CHANGE_BRANCH", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
+            }
+        }
+
+        // Merge with target branch in case if this is a PR
+        stage('Merge target OR Parse commit message') {
+            if (env.CHANGE_ID != null) {
+                container('git') {
+                    sh '''
+                      git config --global user.name "IUdayanganiRajaguru"
+                      git config --global user.email "iudayanganirajaguru@gmail.com"
+                      git merge origin/$CHANGE_TARGET
+                    '''
+                }
+            }
+        }
+
+        stage('Build Image & Push to Registry') {
+            sh '''
+                docker-compose build
+                docker tag myapp_react-app 496572606827.dkr.ecr.us-east-1.amazonaws.com/my-react-app:v1
+                docker push 496572606827.dkr.ecr.us-east-1.amazonaws.com/my-react-app:v1
+            '''
+        }
+
+
+
