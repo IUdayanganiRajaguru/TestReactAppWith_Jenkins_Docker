@@ -6,24 +6,25 @@ def CREDENTIAL = 'IUR-github-cred'
 
         // Checking out
         stage("Checkout") {
-            if (env.BRANCH_NAME == "$TRUNK") {
-                git branch: "$BRANCH_NAME", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
-            } else {
-                git branch: "$CHANGE_BRANCH", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
-            }
+//             if (env.BRANCH_NAME == "$TRUNK") {
+//                 git branch: "$BRANCH_NAME", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
+//             } else {
+//                 git branch: "$CHANGE_BRANCH", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
+//             }
+               sh '''
+                    git checkout "$TRUNK"
+               '''
         }
 
-        // Merge with target branch in case if this is a PR
+//         // Merge with target branch in case if this is a PR
         stage('Merge target OR Parse commit message') {
-            if (env.CHANGE_ID != null) {
-                container('git') {
+//             if (env.CHANGE_ID != null) {
+//                 container('git') {
                     sh '''
-                      git config --global user.name "IUdayanganiRajaguru"
-                      git config --global user.email "iudayanganirajaguru@gmail.com"
-                      git merge origin/$CHANGE_TARGET
+//                       git merge origin/$CHANGE_TARGET
                     '''
-                }
-            }
+//                 }
+//             }
         }
 
         stage('Build Image & Push to Registry') {
