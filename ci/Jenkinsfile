@@ -2,40 +2,27 @@ def TRUNK = 'develop'
 def REPO = 'IUdayanganiRajaguru/TestReactAppWith_Jenkins_Docker'
 def CREDENTIAL = 'IUR-github-cred'
 
-    node(POD_LABEL) {  if (env.CHANGE_ID != null || env.BRANCH_NAME == "$TRUNK") {
+    node {  if (env.CHANGE_ID != null || env.BRANCH_NAME == "$TRUNK") {
 
         // Checking out
         stage("Checkout") {
-//             if (env.BRANCH_NAME == "$TRUNK") {
-//                 git branch: "$BRANCH_NAME", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
-//             } else {
-//                 git branch: "$CHANGE_BRANCH", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
-//             }
-                sh '''
-                    git checkout "$TRUNK"
-                '''
+            if (env.BRANCH_NAME == "$TRUNK") {
+                git branch: "$BRANCH_NAME", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
+            } else {
+                git branch: "$CHANGE_BRANCH", credentialsId: "$CREDENTIAL", url: "https://github.com/$REPO"
+            }
         }
-
-
-//         stage('Merge target OR Parse commit message') {
-//             if (env.CHANGE_ID != null) {
-//                 container('git') {
-//                     sh '''
-//                       git config --global user.name "IUdayanganiRajaguru"
-//                       git config --global user.email "iudayanganirajaguru@gmail.com"
-//                       git merge origin/$CHANGE_TARGET
-//                     '''
-//                 }
-//             }
-//         }
 
         // Merge with target branch in case if this is a PR
         stage('Merge target OR Parse commit message') {
             if (env.CHANGE_ID != null) {
-                sh '''
-                    git merge origin/$CHANGE_TARGET
-                '''
-
+                container('git') {
+                    sh '''
+                      git config --global user.name "IUdayanganiRajaguru"
+                      git config --global user.email "iudayanganirajaguru@gmail.com"
+                      git merge origin/$CHANGE_TARGET
+                    '''
+                }
             }
         }
 
