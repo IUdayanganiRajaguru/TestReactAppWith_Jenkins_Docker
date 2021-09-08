@@ -14,15 +14,25 @@ def CREDENTIAL = 'IUR-github-cred'
         }
 
         // Merge with target branch in case if this is a PR
+//         stage('Merge target OR Parse commit message') {
+//             if (env.CHANGE_ID != null) {
+//                 container('git') {
+//                     sh '''
+//                       git config --global user.name "IUdayanganiRajaguru"
+//                       git config --global user.email "iudayanganirajaguru@gmail.com"
+//                       git merge origin/$CHANGE_TARGET
+//                     '''
+//                 }
+//             }
+//         }
+
+        // Merge with target branch in case if this is a PR
         stage('Merge target OR Parse commit message') {
             if (env.CHANGE_ID != null) {
-                container('git') {
-                    sh '''
-                      git config --global user.name "IUdayanganiRajaguru"
-                      git config --global user.email "iudayanganirajaguru@gmail.com"
-                      git merge origin/$CHANGE_TARGET
-                    '''
-                }
+                sh '''
+                    git merge origin/$CHANGE_TARGET
+                '''
+
             }
         }
 
